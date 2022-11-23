@@ -39,6 +39,10 @@ public class Login {
         if(rs.next()){
             int id = rs.getInt("id");
             String name = rs.getString("name");
+            if ( id == 1) {
+                AdminPage ap = new AdminPage();
+                ap.AdminPage(id);
+            }
             MainMenu mm = new MainMenu();
             mm.MainMenu(id, name);
         }
