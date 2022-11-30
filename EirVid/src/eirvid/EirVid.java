@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class EirVid {
     
     public static void main(String[] args) throws SQLException, NoSuchAlgorithmException, IOException {
-        System.out.println("Welcome to ÉirVid!\nPlease select an option:" );
+        System.out.println("\nWelcome to ÉirVid!\nPlease select an option:" );
         int input;
         
         /* Switch menu */
