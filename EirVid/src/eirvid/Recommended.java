@@ -6,12 +6,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 class Recommended {
-    public static String Recommended() throws SQLException {
-    
+    public static void Recommended() throws SQLException {
+        
+        /* Get and store information about all films rented by users */
         PreparedStatement st;
         ResultSet rs;
               
@@ -29,6 +33,7 @@ class Recommended {
             rentedTime.add(intRentedTime);
         }
         
+        /* Organize arrays using bubble sort */
         int n = rentedTime.size();
         long temp = 0;
         int temp1 = 0;
@@ -46,27 +51,27 @@ class Recommended {
             }
         } 
         
+        /* Declare the time now and 5 minutes before */
         long timeNow = Instant.now().toEpochMilli();
         long minutes5Before = timeNow - TimeUnit.MINUTES.toMillis(5);
        
-        /*
+        /* Filter out films rented past 5 minutes before current time */
         for (int p = 0; p < rentedTime.size() ;p++) {
             if (rentedTime.get(p) < minutes5Before) {
-                System.out.println("true");
-                System.out.println(movieRented.get(p));
-                System.out.println(rentedTime.get(p));
                 movieRented.remove(p);
                 rentedTime.remove(p);
-            } else {
-                System.out.println("false");
+                p--;
             }
-        } 
+        }
         
-        System.out.println(minutes5Before);
-        System.out.println(movieRented);
-        System.out.println(rentedTime); */
+        Set<Integer> set = new HashSet<Integer>();
+        for (int num : movieRented) {
+            set.add(num);
+        }
         
-        String stringRecommended = "The recommended is...";
-        return stringRecommended;
+        Object[] recommendedMovies = set.toArray();
+        
+        System.out.println("Our most rented movies of the past 5 minutes are: " + Arrays.toString(recommendedMovies));
+       
     }
 }
