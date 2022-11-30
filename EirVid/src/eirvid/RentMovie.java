@@ -3,9 +3,9 @@ package eirvid;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 class RentMovie {
@@ -13,8 +13,11 @@ class RentMovie {
         long initialTime = Instant.now().toEpochMilli();
         long endTime = initialTime + TimeUnit.MINUTES.toMillis(1);
         
-        LocalDateTime initialTimeFormatted = Instant.ofEpochMilli(initialTime).atZone(ZoneId.systemDefault()).toLocalDateTime();
-        LocalDateTime endTimeFormatted = Instant.ofEpochMilli(endTime).atZone(ZoneId.systemDefault()).toLocalDateTime();
+        Date dateInitial = new Date(initialTime);
+        Date dateEnd = new Date(endTime);
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        String initialTimeFormatted = format.format(dateInitial);
+        String endTimeFormatted = format.format(dateEnd);
         
         String stringUserId = Integer.toString(id);
         String stringMovieId = Integer.toString(movieId);
@@ -42,6 +45,9 @@ class RentMovie {
         } catch (SQLException err) {
             System.out.println("Something went wrong while adding rent to database!");
         }
+        
+        System.out.println("You have rented the movie at: " + initialTimeFormatted);
+        System.out.println("It will be available until: " + endTimeFormatted); 
        
     }
 }
