@@ -46,27 +46,31 @@ public class Login {
         
                     PreparedStatement st;
                     ResultSet rs;
-              
-                    String query = "SELECT * FROM users WHERE email = ? AND password = ?";
+                    
+                    try {
+                        String query = "SELECT * FROM users WHERE email = ? AND password = ?";
                             
-                    st = My_CNX.getConnection().prepareStatement(query);
+                        st = My_CNX.getConnection().prepareStatement(query);
                 
-                    st.setString(1, email);
-                    st.setString(2, password);
-                    rs = st.executeQuery();
+                        st.setString(1, email);
+                        st.setString(2, password);
+                        rs = st.executeQuery();
                 
-                    if(rs.next()){
-                        int id = rs.getInt("id");
-                        String name = rs.getString("name");
-                        if ( id == 1) {
-                            AdminPage ap = new AdminPage();
-                            ap.AdminPage(id);
+                        if(rs.next()){
+                            int id = rs.getInt("id");
+                            String name = rs.getString("name");
+                            if ( id == 1) {
+                                AdminPage ap = new AdminPage();
+                                ap.AdminPage(id);
+                            }
+                            MainMenu mm = new MainMenu();
+                            mm.MainMenu(id, name);
                         }
-                        MainMenu mm = new MainMenu();
-                        mm.MainMenu(id, name);
-                    }
-                    else {
-                        System.out.println("Password incorrect or account not found!");
+                        else {
+                            System.out.println("Password incorrect or account not found!");
+                        }
+                    } catch (SQLException err) {
+                        System.out.println("Something went wrong while fetching data from database!");
                     }
                     break;
                 

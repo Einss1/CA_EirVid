@@ -79,6 +79,13 @@ public class Registration {
                         System.out.println("That is not a valid password! A valid password contains: \n-At least 8 characters\n-At least one digit\n-At least one uppercase character and one lowercase character\n-At least one special character(@#$%¨, etc)\n-No space allowed\nPlease try again:");
                         password = scanner.nextLine().trim();
                     }
+                    
+                    System.out.println("Please confirm your password!");
+                    String passwordConfirmation = scanner.nextLine().trim();
+                    while (passwordConfirmation.equals(password) == false) {
+                        System.out.println("Your passwords differ from each other.\nPlease confirm your password!");
+                        passwordConfirmation = scanner.nextLine().trim();
+                    }
         
                     /* MD5 hashing method */
                     MessageDigest md = MessageDigest.getInstance("MD5");
@@ -97,12 +104,12 @@ public class Registration {
                         st.setString(2, email);
                         st.setString(3, password);
   
-                    if(st.executeUpdate() != 0) {
-                        System.out.println("\nYour account was created successfully!");
-                        main(null);
-                    }else{
-                        System.out.println("Something went wrong, please try again!");
-                    } 
+                        if(st.executeUpdate() != 0) {
+                            System.out.println("\nYour account was created successfully!");
+                            main(null);
+                        }else{
+                            System.out.println("Something went wrong, please try again!");
+                        } 
                     } catch (SQLException err) {
                         System.out.println("Error while inserting information into database!");
                     }
