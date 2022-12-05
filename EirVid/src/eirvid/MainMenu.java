@@ -1,8 +1,10 @@
 /* Chia Hua Lin 2020044 */
 package eirvid;
 
+import static eirvid.EirVid.main;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,14 +12,14 @@ import java.time.Instant;
 import java.util.Scanner;
 
 public class MainMenu {
-    public void MainMenu(int id, String name) throws FileNotFoundException, IOException, SQLException {
+    public void MainMenu(int id, String name) throws FileNotFoundException, IOException, SQLException, NoSuchAlgorithmException {
         
         System.out.println("Please select an option:" );
         int input;
         
         /* Switch menu */
         do {
-            System.out.println("\n1 - Rent movie \n2 - Recommended \n0 - Exit");
+            System.out.println("\n1 - Rent movie \n2 - Recommended \n9 - Logout \n0 - Exit");
             Scanner scanner = new Scanner(System.in);
             while(!scanner.hasNextInt()){
                 System.out.println("Input is not a number! Please pick a number!");
@@ -117,6 +119,11 @@ public class MainMenu {
                 //Check recommended
                 case 2:
                     Recommended.Recommended();
+                    break;
+                
+                //Logout
+                case 9:
+                    main(null);  
                     break;
                     
                 // Exit
