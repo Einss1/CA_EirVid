@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 class RentMovie {
-    public static void RentMovie(int id, int movieId){
+    public static void RentMovie(String name, int id, int movieId, String movie, int price){
         long initialTime = Instant.now().toEpochMilli();
         long endTime = initialTime + TimeUnit.MINUTES.toMillis(1);
         
@@ -37,15 +37,14 @@ class RentMovie {
             st.setString(3, stringEndTime);
             st.setString(4, stringUserId);
         
-            if(st.executeUpdate() != 0) {
-                System.out.println("Successful");
-            }else{
+            if(st.executeUpdate() != 0) {} else{
                 System.out.println("Something went wrong, please try again!");
             } 
         } catch (SQLException err) {
             System.out.println("Something went wrong while adding rent to database!");
         }
         
+        System.out.println(name + ", you rented " + movie + " for " + price + " €");
         System.out.println("You have rented the movie at: " + initialTimeFormatted);
         System.out.println("It will be available until: " + endTimeFormatted); 
        
