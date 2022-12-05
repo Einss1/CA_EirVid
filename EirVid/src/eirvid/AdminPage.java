@@ -1,21 +1,23 @@
 /* Chia Hua Lin 2020044 */
 package eirvid;
 
+import static eirvid.EirVid.main;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
 public class AdminPage {
-    public void AdminPage(int id) throws SQLException {
+    public void AdminPage(int id) throws SQLException, NoSuchAlgorithmException, IOException {
         int input;
         
         /* Switch menu */
         do {
-            System.out.println("1 - Update database \n0 - Exit");
+            System.out.println("1 - Update database \n9 - Logout \n0 - Exit");
             Scanner scanner = new Scanner(System.in);
             while(!scanner.hasNextInt()){
                 System.out.println("Input is not a number! Please pick a number!");
@@ -55,9 +57,9 @@ public class AdminPage {
                     String line = "";
                     String splitBy = ",";
                     int i = 0;             
-                    int[] movieId = new int[11];
-                    String[] movieTitle = new String[11];
-                    int[] moviePrice = new int[11];
+                    int[] movieId = new int[50000];
+                    String[] movieTitle = new String[50000];
+                    int[] moviePrice = new int[50000];
                     
                     //Insert into new database movies and its price.
                     try {
@@ -87,6 +89,11 @@ public class AdminPage {
                     catch(IOException e) {
                         System.out.println("Something went wrong while inserting data into database!");
                     }
+                    break;
+                    
+                //Logout
+                case 9:
+                    main(null);  
                     break;
 
                 // Exit
