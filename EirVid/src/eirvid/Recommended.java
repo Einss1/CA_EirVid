@@ -16,24 +16,31 @@ class Recommended {
     public static void Recommended() throws SQLException {
         
         /* Get and store information about all films rented by users */
-        PreparedStatement st;
-        ResultSet rs;
-              
-        String query = "SELECT * FROM users";
-                            
-        st = My_CNX.getConnection().prepareStatement(query);
-        rs = st.executeQuery();
-        
         List<Integer> movieRented=new ArrayList<>();
         List<Long> rentedTime=new ArrayList<>();
-        while (rs.next()) {      
-            movieRented.add(rs.getInt("movieRented"));
-            String stringRentedTime = rs.getString("rentedTime").trim();
-            long intRentedTime = Long.parseLong(stringRentedTime);
-            rentedTime.add(intRentedTime);
+        
+        try {
+            
+            PreparedStatement st;
+            ResultSet rs;
+              
+            String query = "SELECT * FROM users";
+                            
+            st = My_CNX.getConnection().prepareStatement(query);
+            rs = st.executeQuery();
+        
+            while (rs.next()) {      
+                movieRented.add(rs.getInt("movieRented"));
+                String stringRentedTime = rs.getString("rentedTime").trim();
+                long intRentedTime = Long.parseLong(stringRentedTime);
+                rentedTime.add(intRentedTime);
+            }
+            
+        } catch (SQLException err) {
+            System.out.println("Something went wrong while fetching from database");
         }
         
-        /* Organize arrays using bubble sort */
+        /* Organize arrays indexes using bubble sort */
         int n = rentedTime.size();
         long temp = 0;
         int temp1 = 0;
@@ -56,22 +63,57 @@ class Recommended {
         long minutes5Before = timeNow - TimeUnit.MINUTES.toMillis(5);
        
         /* Filter out films rented past 5 minutes before current time */
-        for (int p = 0; p < rentedTime.size() ;p++) {
-            if (rentedTime.get(p) < minutes5Before) {
-                movieRented.remove(p);
-                rentedTime.remove(p);
-                p--;
+        for (int i = 0; i < rentedTime.size() ;i++) {
+            if (rentedTime.get(i) < minutes5Before) {
+                movieRented.remove(i);
+                rentedTime.remove(i);
+                i--;
             }
         }
         
+        /* Transform long ArrayList into set */
         Set<Integer> set = new HashSet<Integer>();
         for (int num : movieRented) {
             set.add(num);
         }
         
-        Object[] recommendedMovies = set.toArray();
+        /* Transform set into Integer array */
+        Integer[] recommendedMovies = new Integer[set.size()];
+        int b = 0;
+        for (Integer i: set) {
+            recommendedMovies[b++] = i;
+        }
         
-        System.out.println("Our most rented movies of the past 5 minutes are: " + Arrays.toString(recommendedMovies));
+        /* Declare a String array with 5 slots for the 5 most rented films of the past 5 minutes */
+        String[] movieTitle = new String[5];
+        
+        /* Get the movie names based on their id number */
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            
+            for (int i = 0; i < recommendedMovies.length; i++) {
+                String query2 = "SELECT * FROM movies WHERE id = ?";
+                
+                st = My_CNX.getConnection().prepareStatement(query2);
+                st.setString(1, Integer.toString(recommendedMovies[i]));
+                rs = st.executeQuery();
+                
+                if(rs.next()){
+                            String movie = rs.getString("movie");
+                            movieTitle[i] = movie;
+                }
+            }
+                        
+        } catch (SQLException err) {
+            System.out.println("Something went wrong while fetching from database");
+        }
+        
+        /* Clear out null and empty values from movieTitle array */ 
+        /* Code from: https://makeinjava.com/remove-null-empty-string-array-lambda-stream-java8-example/ */
+        String[] removedNull = Arrays.stream(movieTitle).filter(value -> value != null && value.length() > 0).toArray(size -> new String[size]);
+        
+        System.out.println("Our most rented movies of the past 5 minutes are: " + Arrays.toString(removedNull));
        
     }
 }
