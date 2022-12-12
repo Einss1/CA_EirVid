@@ -9,24 +9,24 @@ import java.util.logging.Logger;
 
 /* Class to connect to database */
 public class My_CNX {
-    
+
     private static String servername = "localhost";
     private static String username = "root";
     private static String dbname = "eirvid";
     private static Integer portnumber = 3306;
     private static String password = "";
-    
+
     public static Connection getConnection() {
         Connection cnx = null;
-        
+
         MysqlDataSource datasource = new MysqlDataSource();
-        
+
         datasource.setServerName(servername);
         datasource.setUser(username);
         datasource.setPassword(password);
         datasource.setDatabaseName(dbname);
         datasource.setPortNumber(portnumber);
-        
+
         try {
             cnx = datasource.getConnection();
         } catch (SQLException ex) {
@@ -35,5 +35,5 @@ public class My_CNX {
 
         return cnx;
     }
-    
+
 }
